@@ -14,7 +14,7 @@ const isomorphicConfig = merge(baseConfig, {
     libraryTarget: 'commonjs2',
   },
   externals: [
-    nodeExternals(),
+    nodeExternals({ whitelist: [/\.css$/, /vuetify/] }),
   ],
   plugins:   [
     new webpack.DefinePlugin({ CLIENT: false, SERVER: true, nodeRequire: 'function(module){return require(module);}' }),

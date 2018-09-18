@@ -18,7 +18,7 @@ let serverConfig = merge(baseConfig, {
   },
   externals: [
     nodeExternals({
-                    whitelist: ['webpack/hot/poll?1000'],
+                    whitelist: ['webpack/hot/poll?1000', /\.css$/, /vuetify/],
                   }),
   ],
   plugins:   [

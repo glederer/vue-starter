@@ -1,202 +1,235 @@
 <template>
-  <div id="app" :class="$style.app">
-    <vue-notification-stack />
-
-    <vue-navigation-progress :is-navigating="isNavigating" />
-
-    <vue-nav-bar>
-      <ul :class="$style.nav">
-        <li>
-          <a href="/docs" @click.native="navBarClose">
-            <vue-icon-book />
-            <small>{{ $t('App.nav.docs' /* Documentation */) }}</small>
-          </a>
-        </li>
-        <li>
-          <router-link to="/counter" @click.native="navBarClose">
-            <vue-icon-hashtag />
-            <small>{{ $t('App.nav.counter' /* Counter */) }}</small>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/components" @click.native="navBarClose">
-            <vue-icon-puzzle-piece />
-            <small>{{ $t('App.nav.components' /* Components */) }}</small>
-          </router-link>
-        </li>
-        <li>
-          <a @click="localeSwitch('en')">
-            <vue-icon-flag />
-            <small>English</small>
-          </a>
-        </li>
-        <li>
-          <a @click="localeSwitch('de')">
-            <vue-icon-flag />
-            <small>Deutsch</small>
-          </a>
-        </li>
-        <li>
-          <a @click="localeSwitch('pt')">
-            <vue-icon-flag />
-            <small>Português</small>
-          </a>
-        </li>
-        <li>
-          <a @click="localeSwitch('zh-cn')">
-            <vue-icon-flag />
-            <small>中文</small>
-          </a>
-        </li>
-      </ul>
-    </vue-nav-bar>
-
-    <router-view :class="$style.content" />
-
-    <vue-footer />
-
-    <vue-cookie-consent
-      current-version="1.0.0"
-      :cookie-consent-version="cookieConsentVersion"
-      :set-cookie-consent-version="setCookieConsentVersion">
-      This is a cookie consent component which shows the cookie consent every time you change the version of the
-      consent.
-    </vue-cookie-consent>
+  <div id="app">
+    <v-app id="inspire">
+      <v-navigation-drawer
+        :clipped="$vuetify.breakpoint.lgAndUp"
+        v-model="drawer"
+        fixed
+        app
+      >
+        <v-list dense>
+          <template v-for="item in items">
+            <v-layout
+              v-if="item.heading"
+              :key="item.heading"
+              row
+              align-center
+            >
+              <v-flex xs6>
+                <v-subheader v-if="item.heading">
+                  {{ item.heading }}
+                </v-subheader>
+              </v-flex>
+              <v-flex xs6 class="text-xs-center">
+                <a href="#!" class="body-2 black--text">EDIT</a>
+              </v-flex>
+            </v-layout>
+            <v-list-group
+              v-else-if="item.children"
+              v-model="item.model"
+              :key="item.text"
+              :prepend-icon="item.model ? item.icon : item['icon-alt']"
+              append-icon=""
+            >
+              <v-list-tile slot="activator">
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    {{ item.text }}
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile
+                v-for="(child, i) in item.children"
+                :key="i"
+                @click=""
+              >
+                <v-list-tile-action v-if="child.icon">
+                  <v-icon>{{ child.icon }}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    {{ child.text }}
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+            <v-list-tile v-else :key="item.text" @click="">
+              <v-list-tile-action>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  {{ item.text }}
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </v-list>
+      </v-navigation-drawer>
+      <v-toolbar
+        :clipped-left="$vuetify.breakpoint.lgAndUp"
+        color="blue darken-3"
+        dark
+        app
+        fixed
+      >
+        <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
+          <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+          <span class="hidden-sm-and-down">Google Contacts</span>
+        </v-toolbar-title>
+        <v-text-field
+          flat
+          solo-inverted
+          hide-details
+          prepend-inner-icon="search"
+          label="Search"
+          class="hidden-sm-and-down"
+        ></v-text-field>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon>apps</v-icon>
+        </v-btn>
+        <v-btn icon>
+          <v-icon>notifications</v-icon>
+        </v-btn>
+        <v-btn icon large>
+          <v-avatar size="32px" tile>
+            <img
+              src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
+              alt="Vuetify"
+            >
+          </v-avatar>
+        </v-btn>
+      </v-toolbar>
+      <v-content>
+        <v-container fluid fill-height>
+          <v-layout justify-center align-center>
+            <v-tooltip right>
+              <v-btn
+                slot="activator"
+                :href="source"
+                icon
+                large
+                target="_blank"
+              >
+                <v-icon large>code</v-icon>
+              </v-btn>
+              <span>Source</span>
+            </v-tooltip>
+            <v-tooltip right>
+              <v-btn slot="activator" icon large href="https://codepen.io/johnjleider/pen/EQOYVV" target="_blank">
+                <v-icon large>mdi-codepen</v-icon>
+              </v-btn>
+              <span>Codepen</span>
+            </v-tooltip>
+          </v-layout>
+        </v-container>
+      </v-content>
+      <v-btn
+        fab
+        bottom
+        right
+        color="pink"
+        dark
+        fixed
+        @click="dialog = !dialog"
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+      <v-dialog v-model="dialog" width="800px">
+        <v-card>
+          <v-card-title
+            class="grey lighten-4 py-4 title"
+          >
+            Create contact
+          </v-card-title>
+          <v-container grid-list-sm class="pa-4">
+            <v-layout row wrap>
+              <v-flex xs12 align-center justify-space-between>
+                <v-layout align-center>
+                  <v-avatar size="40px" class="mr-3">
+                    <img
+                      src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png"
+                      alt=""
+                    >
+                  </v-avatar>
+                  <v-text-field
+                    placeholder="Name"
+                  ></v-text-field>
+                </v-layout>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field
+                  prepend-icon="business"
+                  placeholder="Company"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field
+                  placeholder="Job title"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  prepend-icon="mail"
+                  placeholder="Email"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  type="tel"
+                  prepend-icon="phone"
+                  placeholder="(000) 000 - 0000"
+                  mask="phone"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  prepend-icon="notes"
+                  placeholder="Notes"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <v-card-actions>
+            <v-btn flat color="primary">More</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn flat color="primary" @click="dialog = false">Cancel</v-btn>
+            <v-btn flat @click="dialog = false">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-app>
   </div>
 </template>
 
 <script lang="ts">
-  import { mapActions, mapGetters } from 'vuex';
-  import VueNavBar                  from '../../shared/components/VueNavBar/VueNavBar.vue';
-  import VueGrid                    from '../../shared/components/VueGrid/VueGrid.vue';
-  import VueGridItem                from '../../shared/components/VueGridItem/VueGridItem.vue';
-  import VueFooter                  from '../../shared/components/VueFooter/VueFooter.vue';
-  import VueNotificationStack       from '../../shared/components/VueNotificationStack/VueNotificationStack.vue';
-  import VueCookieConsent           from '../../shared/components/VueCookieConsent/VueCookieConsent';
-  import { loadLocaleAsync }        from '../../shared/plugins/i18n/i18n';
-  import { EventBus }               from '../../shared/services/EventBus';
-  import VueIconBook                from '../../shared/components/icons/VueIconBook/VueIconBook';
-  import VueIconHashtag             from '../../shared/components/icons/VueIconHashtag/VueIconHashtag';
-  import VueIconPuzzlePiece         from '../../shared/components/icons/VueIconPuzzlePiece/VueIconPuzzlePiece';
-  import VueIconFlag                from '../../shared/components/icons/VueIconFlag/VueIconFlag';
-  import VueNavigationProgress      from '../../shared/components/VueNavigationProgress/VueNavigationProgress';
-
   export default {
-    components: {
-      VueNavigationProgress,
-      VueIconFlag,
-      VueIconPuzzlePiece,
-      VueIconHashtag,
-      VueIconBook,
-      VueCookieConsent,
-      VueNavBar,
-      VueGrid,
-      VueGridItem,
-      VueFooter,
-      VueNotificationStack,
-    },
-    data() {
-      return {
-        isNavigating: false,
-      };
-    },
-    computed:   {
-      ...mapGetters('app', ['cookieConsentVersion']),
-    },
-    methods:    {
-      ...mapActions('app', ['changeLocale', 'setCookieConsentVersion']),
-      localeSwitch(locale: string): void {
-        loadLocaleAsync(locale)
-        .catch((error: Error) => console.log(error));
-
-        this.changeLocale(locale);
-        this.navBarClose();
-      },
-      navBarClose() {
-        EventBus.$emit('navbar.close');
-      },
-      initProgressBar() {
-        this.$router.beforeEach((to: any, from: any, next: any) => {
-          this.isNavigating = true;
-          next();
-        });
-        this.$router.afterEach(() => {
-          this.isNavigating = false;
-        });
-      },
-    },
-    created() {
-      this.initProgressBar();
+    data:  () => ({
+      drawer: true,
+      items:  [
+        { icon: 'trending_up', text: 'Most Popular' },
+        { icon: 'subscriptions', text: 'Subscriptions' },
+        { icon: 'history', text: 'History' },
+        { icon: 'featured_play_list', text: 'Playlists' },
+        { icon: 'watch_later', text: 'Watch Later' },
+      ],
+      items2: [
+        { picture: 28, text: 'Joseph' },
+        { picture: 38, text: 'Apple' },
+        { picture: 48, text: 'Xbox Ahoy' },
+        { picture: 58, text: 'Nokia' },
+        { picture: 78, text: 'MKBHD' },
+      ],
+    }),
+    props: {
+      source: String,
+      dialog: Object,
     },
   };
 </script>
 
-<style lang="scss" module>
-  @import "../../shared/styles";
-  @import "../../shared/styles/reset";
-  @import "../../shared/styles/typo";
-  @import "../../shared/styles/global";
-  @import url($google-font);
-
-  .app {
-    min-height:     100vh;
-    display:        flex;
-    flex-direction: column;
-  }
-
-  .content {
-    flex: 1;
-  }
-
-  .nav {
-    margin:         $space-unit 0 0 0;
-    padding:        0;
-    list-style:     none;
-    display:        flex;
-    flex-direction: row;
-    flex-wrap:      wrap;
-    width:          100%;
-
-    li {
-      flex:       1;
-      margin:     $space-unit / 2;
-      color:      $text-color;
-      flex-basis: $space-unit * 10;
-      height:     $space-unit * 10;
-      background: $divider-color;
-      cursor:     pointer;
-
-      a {
-        padding:         $space-unit * 2;
-        display:         block;
-        color:           $text-color;
-        text-align:      center;
-        text-decoration: none;
-
-        small {
-          font-size: 12px;
-          display:   block;
-        }
-
-        i {
-          height: 32px;
-          width:  32px;
-        }
-      }
-    }
-
-    @include media(tabletLandscape) {
-      margin: 0;
-
-      li {
-        margin:     $space-unit;
-        opacity:    .8;
-        transition: opacity $transition-duration linear;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-    }
-  }
+<style lang="css">
+  @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons');
+  @import "../../../../node_modules/vuetify/dist/vuetify.css";
 </style>

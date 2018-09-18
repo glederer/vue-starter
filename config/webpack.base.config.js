@@ -11,7 +11,7 @@ const baseConfig = {
   },
   devtool: isProd ? false : '#eval-source-map',
   resolve: {
-    extensions: ['.ts', '.js', '.vue', '.json', '.node', '.scss'],
+    extensions: ['.ts', '.js', '.vue', '.json', '.node', '.css', '.scss'],
     modules:    [
       path.join(__dirname, '..', 'src'),
       path.join(__dirname, '..', 'node_modules'),
@@ -31,6 +31,10 @@ const baseConfig = {
           appendTsSuffixTo: [/\.vue$/],
           transpileOnly:    !isProd,
         },
+      },
+      {
+        test:   /\.css$/,
+        loader: ['vue-style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,
