@@ -69,13 +69,12 @@
 <script lang="ts">
   export default {
       props: {
-        visible: {
+        drawer: {
           type: Boolean,
           required: false
-        }  
+        }
       },
       data:  () => ({
-          drawer: false,
           items:  [
             { icon: 'home', text: 'Home' },
             { icon: 'people', text: 'User' },
@@ -89,7 +88,7 @@
             { icon: 'settings', text: 'Configuration' },
           ],
       })
-  };    
+  };
 
 </script>
 

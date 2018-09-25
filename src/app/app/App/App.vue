@@ -2,7 +2,7 @@
   <div id="app" >
     <v-app id="inspire">
 
-      <vnavigation :visible="drawer">
+      <vnavigation :drawer="drawer">
       </vnavigation>
 
       <vtoolbar  @toggle-menu="toggleMenu()">
@@ -36,14 +36,14 @@
     },
 
     data:  () => ({
-      drawer: true,
+      drawer: false,
     }),
 
     methods: {
       toggleMenu () {
         this.drawer = !this.drawer;
         console.log(this.drawer);
-      }    
+      }
     }
   };
 </script>
