@@ -6,6 +6,8 @@ import { PersistLocalStorage }  from './shared/plugins/vuex-persist/PersistLocal
 import { PersistCookieStorage } from './shared/plugins/vuex-persist/PersistCookieStorage';
 import { AppModule }            from './app/module';
 import { CounterModule }        from './counter/module';
+import { PropertyModule }       from './property/module';
+import { AgencyModule }         from './agency/module';
 
 Vue.use(Vuex);
 
@@ -52,3 +54,5 @@ export const store: Store<IState> = new Vuex.Store(
 
 store.registerModule(['app'], AppModule, { preserveState: true });
 store.registerModule(['counter'], CounterModule, { preserveState: true });
+store.registerModule(['property'], PropertyModule, { preserveState: true });
+store.registerModule(['agency'], AgencyModule, { preserveState: true });

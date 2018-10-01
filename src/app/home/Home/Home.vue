@@ -1,12 +1,36 @@
 <template>
-  <div :class="$style.home">
-    <stage
-      :disable-particles="disableParticles" />
-    <dev-ex />
-    <enterprise-ready />
-    <user-experience />
-    <quick-start />
-  </div>
+    <v-container grid-list-md text-xs-fluid>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-card dark color="primary">
+            <v-card-text class="px-0">
+              <quickStart/>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs4>
+          <v-card>
+            <v-card-text class="px-0">
+              <stage/>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs4>
+          <v-card>
+            <v-card-text class="px-0">
+              <user-experience/>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs4>
+          <v-card>
+            <v-card-text class="px-0">
+              <enterprise-ready/>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>  
+    </v-container>  
 </template>
 
 <script lang="ts">

@@ -32,7 +32,7 @@
       },
       data:  () => ({
           items:  [
-            { icon: 'home', text: 'Home', action: 'home' },
+            { icon: 'home', text: 'Home', action: '/' },
             { icon: 'people', text: 'User', action: 'user' },
             { icon: 'location_city', text: 'Property', action: 'property' },
             { icon: 'trending_up', text: 'Agency', action: 'agency' },
